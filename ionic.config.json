@@ -1,0 +1,7 @@
+{
+  "name": "RazorpaySampleApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

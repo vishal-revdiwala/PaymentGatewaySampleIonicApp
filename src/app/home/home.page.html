@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Product
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-card>
+  <ion-card-title padding color="primary">
+      T-shirts
+  </ion-card-title>
+  <ion-card-content>
+    <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="./assets/shirt.jpg" style="height: auto;">
+        </ion-thumbnail>
+        <ion-label>Polo sleve-less</ion-label>
+        <ion-label style="text-align: right"> Rs. 500/- </ion-label>
+        <ion-item>
+            <ion-button (click)="decrement()"><ion-icon name="remove"></ion-icon></ion-button>
+            <ion-input value={{items}} color="primary" style="max-width:20px; text-align:center;" placeholder="0"></ion-input>
+            <ion-button (click)="increment()"><ion-icon name="add"></ion-icon></ion-button>
+          </ion-item>
+      </ion-item>
+  </ion-card-content>
+</ion-card>
+<ion-content padding style="text-align: center; margin-top: 70px;">
+  <div>
+      <ion-label>TOTAL: {{items*500}}</ion-label>
+  </div>
+  <div>
+    <ion-button color="success" (click)="pay()">
+      Pay with Razorpay
+    </ion-button>
+  </div>
+</ion-content>
