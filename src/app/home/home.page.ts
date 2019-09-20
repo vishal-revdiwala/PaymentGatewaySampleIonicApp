@@ -20,7 +20,7 @@ export class HomePage {
       description: 'Credits towards consultation',
       image: 'https://i.imgur.com/3g7nmJC.png',
       currency: 'INR',
-      key: 'rzp_test_raVvm5yi0mhqLy',
+      key: 'YOUR_RAZORPAY_KEY',
       amount: 50000 * this.items,
       name: 'T-shirt',
       prefill: {
