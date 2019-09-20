@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 declare var RazorpayCheckout: any;
+declare var paypal: any;
 
 @Component({
   selector: 'app-home',
@@ -12,19 +13,18 @@ export class HomePage {
 
   }
   items: number = 0;
+  renderPaypalButton: boolean = true;
   pay() {
     if(this.items > 0){
     const options = {
       description: 'Credits towards consultation',
       image: 'https://i.imgur.com/3g7nmJC.png',
       currency: 'INR',
-      key: 'YOUR_RAZORPAY_KEY',
+      key: 'rzp_test_raVvm5yi0mhqLy',
       amount: 50000 * this.items,
       name: 'T-shirt',
       prefill: {
-        email: 'vishal.r@comakeit.com',
-        contact: '9738086629',
-        name: 'Vishal Revdiwala'
+        name: 'Name'
       },
       theme: {
         color: '#F37254'
@@ -33,17 +33,17 @@ export class HomePage {
 
     const successCallback = function(success) {
       alert('payment_id: ' + success.razorpay_payment_id);
-      const orderId = success.razorpay_order_id;
-      const signature = success.razorpay_signature;
     };
 
     const cancelCallback = function (error) {
-      alert(error.description + ' (Error ' + error.code + ')');
+      alert(error.description);
     };
 
     RazorpayCheckout.on('payment.success', successCallback);
     RazorpayCheckout.on('payment.cancel', cancelCallback);
     RazorpayCheckout.open(options);
+  } else {
+    alert('please select a product before checkout ');
   }
   }
   increment() {
@@ -54,4 +54,57 @@ export class HomePage {
       this.items = this.items - 1;
     }
   }
+
+  intiatePaypal(){
+    if(this.renderPaypalButton && this.items > 0){
+    console.log(paypal);
+    const payPalConfig = {
+      env: 'sandbox',
+      client: {
+        sandbox: 'Paypal_ID',
+      },
+      commit: false,
+      payment: (data, actions) => {
+        console.log('data is', data, actions);
+        return actions.payment.create({
+          payment: {
+            transactions: [
+              { amount: { total: this.items * 500, currency: 'INR' } }
+            ]
+          }
+        });
+      }
+    };
+
+    paypal.Buttons({
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: this.items * 500
+            }
+          }]
+        });
+      },
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          alert('Transaction completed by ' + details.payer.name.given_name);
+          // Call your server to save the transaction
+          return fetch('/paypal-transaction-complete', {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              orderID: data.orderID
+            })
+          });
+        });
+      }
+    }).render('#paypal-button');
+    this.renderPaypalButton = false;
+  } else if(this.items == 0){
+    alert('please select a product before checkout ');
+  }
+}
 }

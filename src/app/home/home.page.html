@@ -1,13 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Product
+    <ion-title class="ion-padding">
+      Products
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-card>
-  <ion-card-title padding color="primary">
+  <ion-card-title class="ion-padding" color="primary">
       T-shirts
   </ion-card-title>
   <ion-card-content>
@@ -25,7 +25,7 @@
       </ion-item>
   </ion-card-content>
 </ion-card>
-<ion-content padding style="text-align: center; margin-top: 70px;">
+<ion-content class="ion-padding" style="text-align: center; margin-top: 70px;">
   <div>
       <ion-label>TOTAL: {{items*500}}</ion-label>
   </div>
@@ -33,5 +33,7 @@
     <ion-button color="success" (click)="pay()">
       Pay with Razorpay
     </ion-button>
+    <ion-button (click)="intiatePaypal()">Paypal</ion-button>
+    <div id="paypal-button"></div>
   </div>
 </ion-content>
